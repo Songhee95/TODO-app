@@ -1,8 +1,21 @@
-import { Button, List, ListItem, ListItemAvatar, ListItemText, Modal } from '@material-ui/core';
+import { List, ListItem, ListItemAvatar, ListItemText, Modal } from '@material-ui/core';
 import './Todo.css';
 import React, { useState } from 'react';
 import db from "./firebase";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { makeStyles } from "@material-ui/core/styles";
+
+//modal style 
+const useStyles = makeStyles((theme) =>({
+    paper: {
+        position: "absolute",
+        width: 400,
+        backgroundColor: theme.palette.background.paper,
+        border: "2px solid #000",
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2,4,3)
+    },
+}));
 
 //props stands for properties
 function Todo(props) {
@@ -10,13 +23,14 @@ function Todo(props) {
     const handleOpen = ()=>{
         setOpen(true);
     }
+    const classes = useStyles();
     return (
         <>
         <Modal
             open={open}
             onClose={e =>setOpen(false)}
         >
-            <div>
+            <div className={classes.paper}>
                 <h1>I am a modal</h1>
                 <button onClick={e=> setOpen(false)}></button>
             </div>
