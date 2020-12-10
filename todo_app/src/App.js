@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import './App.css';
 import { Button, FormControl, Input, InputLabel } from '@material-ui/core';
 import Todo from "./Todo";
+import db from "./firebase";
 
 function App() {
 //Imagine in React, everything is component. 
@@ -10,14 +11,25 @@ function App() {
 //JSX = JavaScript + HTML
   
 //set the app useState is something that react gives us which set up short term memory 
-  const [todos, setTodos] = useState(["Take dogs for a walk","Take the rubbish out"]);
+  const [todos, setTodos] = useState(["abc"]);
   const [input, setInput] = useState("");
   
+//When the app loads, we need to listen to the database and fetch new todos as they get added/removed
+  useEffect(()=>{
+    //this code here... fires when the app.js loads
+    db.collection('todos').onSnapshot(snapshot=>{
+      setTodos(snapshot.docs.map(doc=> doc.data().text))
+    })
+  }, [])
+
+
   const addTodo = (event) =>{
     event.preventDefault();
-    //this will fire off when we click the button!!
-    console.log("😍", "im working!!");
-    setTodos([...todos, input]);
+    //add to the firebase database
+    db.collection("todos").add({
+      text: input
+    })
+    //clear up the input after clicking add todo button
     setInput("");
   }
   return (
