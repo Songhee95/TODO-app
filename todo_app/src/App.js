@@ -3,6 +3,9 @@ import './App.css';
 import { Button, FormControl, Input, InputLabel } from '@material-ui/core';
 import Todo from "./Todo";
 import db from "./firebase";
+import firebase from 'firebase';
+
+
 
 function App() {
 //Imagine in React, everything is component. 
@@ -17,17 +20,17 @@ function App() {
 //When the app loads, we need to listen to the database and fetch new todos as they get added/removed
   useEffect(()=>{
     //this code here... fires when the app.js loads
-    db.collection('todos').onSnapshot(snapshot=>{
+    db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot=>{
       setTodos(snapshot.docs.map(doc=> doc.data().text))
     })
   }, [])
-
 
   const addTodo = (event) =>{
     event.preventDefault();
     //add to the firebase database
     db.collection("todos").add({
-      text: input
+      text: input,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
     })
     //clear up the input after clicking add todo button
     setInput("");
