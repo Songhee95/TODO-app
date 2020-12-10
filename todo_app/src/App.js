@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import { Button } from '@material-ui/core';
 
 function App() {
 //Imagine in React, everything is component. 
@@ -23,7 +24,9 @@ function App() {
       <h1>hello world</h1>
       <form>
         <input value={input} onChange={event =>setInput(event.target.value)} />
-        <button type="submit" onClick={addTodo}>Add Todo</button>
+        <Button disabled={!input} type="submit" onClick={addTodo} variant="contained" color="primary">
+          Add Todo
+        </Button>
       </form>
 
       <ul>
